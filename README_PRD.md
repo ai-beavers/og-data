@@ -66,21 +66,21 @@ Goal: a contributor can onboard, find a nearby task, capture it with guidance, s
 
 ### M5 — Submission
 
-- [ ] Submit captured media with basic context: category, location, time, task prompts
-- [ ] Submission states: pending review, accepted, needs retry, rejected
-- [ ] Submission history visible to the contributor
+- [x] Submit captured media with basic context: category, location, time, task prompts
+- [x] Submission states: pending review, accepted, needs retry, rejected
+- [x] Submission history visible to the contributor
 
 ### M6 — Review & Quality Feedback
 
-- [ ] Internal review queue for approving/rejecting submissions (operator-facing, minimal)
-- [ ] Plain-language rejection reasons: missing angles, blurry, poor lighting, duplicate, unsupported subject
-- [ ] Retry flow from a needs-retry state
+- [x] Internal review queue for approving/rejecting submissions (operator-facing, minimal)
+- [x] Plain-language rejection reasons: missing angles, blurry, poor lighting, duplicate, unsupported subject
+- [x] Retry flow from a needs-retry state
 
 ### M7 — Rewards & Earnings
 
-- [ ] Reward assigned per accepted submission (can vary by complexity, demand, quality)
-- [ ] Earnings screen: accumulated total, per-submission rewards, pending rewards
-- [ ] Payout status display (actual payout rails are Post-MVP)
+- [x] Reward assigned per accepted submission (can vary by complexity, demand, quality)
+- [x] Earnings screen: accumulated total, per-submission rewards, pending rewards
+- [x] Payout status display (actual payout rails are Post-MVP)
 
 ---
 
@@ -158,3 +158,4 @@ Add brief dated entries when a deliverable changes status or scope.
 | 2026-06-11 | M2 | Done (Machine A): 3-step onboarding (what/rules/loop), persisted seen-flag via shared storage, entry redirect skips onboarding on revisit |
 | 2026-06-11 | M3 | Done (Machine A): location-sorted opportunity list (expo-location, graceful fallback when denied), cards show task + reward range + distance, tap enters capture flow |
 | 2026-06-11 | M4 | Done (Machine A): guided flow briefing → per-prompt camera steps (expo-camera) → local review with retakes → submit via shared `createSubmission` contract, then lands on submission history. Scope note: optional short-video capture deferred; contract already supports `kind: 'video'` |
+| 2026-06-11 | M5–M7 | Done (Machine B): submission history with status/feedback/retry entry, operator review queue (accept with reward presets, retry/reject with plain-language reasons + optional note), earnings screen (total, pending, reward history, payout-soon notice). All mock-backed with focus refresh. With M4's submit wiring on main, the full loop runs end to end |
