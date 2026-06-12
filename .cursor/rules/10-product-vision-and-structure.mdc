@@ -10,9 +10,9 @@ alwaysApply: true
 - Contributor experience comes first: the capture loop must feel simple, rewarding, trustworthy, and lightweight enough for idle moments.
 - Data buyer needs matter, but should not leak complexity into the contributor UI.
 - Avoid premature decisions about final data format. Captures may remain raw media, annotated media, reconstructed assets, metadata-rich records, or another buyer-ready format.
-- Do not solution around speculative AI/3D pipelines unless the task explicitly asks for it or the PRD changes.
+- AI auto-categorization of captures (vision model classifying category/subject from photos + location metadata) is explicitly in scope. Other speculative AI/3D pipeline work still requires an explicit task or PRD change.
 - Keep product language concrete: capture, submit, review, earn, request, package.
-- Keep the core loop visible in all feature work: discover opportunity, capture well, submit, receive feedback, earn.
+- Keep the core loop visible in all feature work: capture anything, submit, receive feedback, earn. Suggested tasks (opportunities) are optional boosters, never the entry point.
 
 ## Project Structure
 

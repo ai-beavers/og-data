@@ -25,18 +25,20 @@ Physical AI and robotics companies need large amounts of real-world object and e
 
 ### Core Loop (keep visible in all feature work)
 
-Discover opportunity → capture well → submit → receive feedback → earn.
+Capture anything → submit → receive feedback → earn.
+
+Contributors are never gated on a task list: the camera is the home screen and anything can be captured. The app classifies what was captured (AI vision on photos + location metadata) — contributors type nothing. Suggested tasks (operator-defined opportunities) remain as optional boosters with defined reward ranges, not the entry point.
 
 ### Non-Decisions (intentionally open)
 
 - Final downstream data format is not prescribed: raw media, annotated media, reconstructed assets, metadata-rich records, or another buyer-agreed output.
-- No speculative AI/3D pipeline work unless a task or PRD change explicitly calls for it.
+- AI auto-categorization of captures is in scope (see M8). Other speculative AI/3D pipeline work still requires a task or PRD change that explicitly calls for it.
 
 ---
 
 ## MVP
 
-Goal: a contributor can onboard, find a nearby task, capture it with guidance, submit, get reviewed, see feedback, and watch earnings accrue. Buyer-side complexity stays internal (operator tools only).
+Goal: a contributor can onboard, open the camera, capture anything (with optional suggested tasks for bonus rewards), submit, get reviewed, see feedback, and watch earnings accrue. Buyer-side complexity stays internal (operator tools only).
 
 ### M1 — App Foundation
 
@@ -52,11 +54,12 @@ Goal: a contributor can onboard, find a nearby task, capture it with guidance, s
 - [x] Capture-behavior guidelines (what's allowed, what's not)
 - [x] Frame the task simply: find something nearby, capture it well, submit, earn
 
-### M3 — Nearby Capture Opportunities
+### M3 — Suggested Tasks (demoted from primary entry point — see M8)
 
 - [x] Opportunity list driven by location and/or general collection goals
 - [x] Each opportunity states clearly what to capture and the expected reward range
 - [x] Seeded/operator-defined opportunities (no buyer self-serve yet)
+- [x] Demoted to an optional "Tasks" tab; free capture (M8) is the home screen
 
 ### M4 — Guided Capture Flow
 
@@ -82,9 +85,19 @@ Goal: a contributor can onboard, find a nearby task, capture it with guidance, s
 - [x] Earnings screen: accumulated total, per-submission rewards, pending rewards
 - [x] Payout status display (actual payout rails are Post-MVP)
 
+### M8 — Free Capture (capture-first pivot)
+
+- [ ] Camera is the home tab: open, shoot one or more angles, review, submit — no task required
+- [ ] AI auto-categorization on submit: vision model classifies category + subject label from photos and location metadata; contributor types nothing
+- [ ] Graceful AI fallback: submission never blocks on classification (timeout → `uncategorized`, reviewer sees raw capture)
+- [ ] Submissions work without an `opportunityId`; suggested tasks still attach one
+- [ ] Suggested tasks list loads instantly without location (no geolocation blocking — web fix)
+
 ---
 
-## Parallel Workstream Split (two machines)
+## Parallel Workstream Split (two machines) — RETIRED
+
+Phase 1 completed 2026-06-11; both sides merged to main. The capture-first pivot (M8) crosses the old folder boundary, so the split below is retired and kept for history. Shared contract changes remain small, isolated commits.
 
 The MVP is split along the **submit boundary**: Machine A owns everything before a submission exists; Machine B owns everything after. The shared contract between them is the submission payload and its states.
 
@@ -159,3 +172,4 @@ Add brief dated entries when a deliverable changes status or scope.
 | 2026-06-11 | M3 | Done (Machine A): location-sorted opportunity list (expo-location, graceful fallback when denied), cards show task + reward range + distance, tap enters capture flow |
 | 2026-06-11 | M4 | Done (Machine A): guided flow briefing → per-prompt camera steps (expo-camera) → local review with retakes → submit via shared `createSubmission` contract, then lands on submission history. Scope note: optional short-video capture deferred; contract already supports `kind: 'video'` |
 | 2026-06-11 | M5–M7 | Done (Machine B): submission history with status/feedback/retry entry, operator review queue (accept with reward presets, retry/reject with plain-language reasons + optional note), earnings screen (total, pending, reward history, payout-soon notice). All mock-backed with focus refresh. With M4's submit wiring on main, the full loop runs end to end |
+| 2026-06-11 | M8 | Capture-first pivot: core loop changed to "capture anything → submit → review → earn". Opportunities demoted to optional suggested tasks; AI auto-categorization (OpenAI vision) added in scope; two-machine split retired |
