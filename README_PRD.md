@@ -87,11 +87,20 @@ Goal: a contributor can onboard, open the camera, capture anything (with optiona
 
 ### M8 — Free Capture (capture-first pivot)
 
-- [ ] Camera is the home tab: open, shoot one or more angles, review, submit — no task required
-- [ ] AI auto-categorization on submit: vision model classifies category + subject label from photos and location metadata; contributor types nothing
-- [ ] Graceful AI fallback: submission never blocks on classification (timeout → `uncategorized`, reviewer sees raw capture)
-- [ ] Submissions work without an `opportunityId`; suggested tasks still attach one
-- [ ] Suggested tasks list loads instantly without location (no geolocation blocking — web fix)
+- [x] Camera is the home tab: open, shoot one or more angles, review, submit — no task required
+- [x] AI auto-categorization on submit: vision model classifies category + subject label from photos and location metadata; contributor types nothing
+- [x] Graceful AI fallback: submission never blocks on classification (timeout → `uncategorized`, reviewer sees raw capture)
+- [x] Submissions work without an `opportunityId`; suggested tasks still attach one
+- [x] Suggested tasks list loads instantly without location (no geolocation blocking — web fix)
+
+### M8b — Hackathon Demo Wow Layer
+
+Goal: make the demo feel like a normal contributor just created useful physical-world training data, not merely uploaded media.
+
+- [x] Show a short capture turning into a buyer-ready data package: original media, extracted key frames, capture prompt, context metadata, and quality report
+- [x] Add a "robot vision" style preview with animated frame analysis, labels/overlays, and coverage/quality signals
+- [x] Keep the downstream format honest: the demo can preview a structured data package, but does not claim production-grade 3D reconstruction unless explicitly built
+- [x] Make the contributor side feel gamified and rewarding with progress states, satisfying transitions, score/reward feedback, and a clear "training data generated" moment
 
 ---
 
@@ -128,22 +137,23 @@ Goal: deepen contributor retention, open the buyer side, and turn accepted data 
 
 ### P1 — Game-Like Motivation
 
-- [ ] Progress, streaks, and challenges
-- [ ] Collection goals, levels, and badges
-- [ ] Leaderboards and location-based discovery
-- [ ] Keep the game layer motivating without making capture feel like technical work
+- [x] Progress, streaks, and challenges
+- [x] Collection goals, levels, and badges
+- [x] Leaderboards and location-based discovery
+- [x] Keep the game layer motivating without making capture feel like technical work
 
 ### P2 — Data Request Campaigns
 
-- [ ] Buyers/operators define needed data: categories, environments, geographies, capture depth, quality expectations, reward ranges
-- [ ] Campaigns automatically become contributor-facing opportunities
-- [ ] Campaign progress visibility for the requester
+- [x] Buyers/operators define needed data: categories, environments, geographies, capture depth, quality expectations, reward ranges
+- [x] Campaigns automatically become contributor-facing opportunities
+- [x] Campaign progress visibility for the requester
 
 ### P3 — Dataset Packaging
 
 - [ ] Organize accepted submissions into buyer-ready datasets
 - [ ] Preserve captured media plus context needed to evaluate, filter, and use the data
 - [ ] Support flexible output formats per buyer agreement (format intentionally not prescribed)
+- [ ] Explore buyer package formats starting with raw media + metadata + key frames + quality signals before committing to heavier outputs like reconstructed assets or 3D models
 
 ### P4 — Scaled Review & Trust
 
@@ -172,4 +182,7 @@ Add brief dated entries when a deliverable changes status or scope.
 | 2026-06-11 | M3 | Done (Machine A): location-sorted opportunity list (expo-location, graceful fallback when denied), cards show task + reward range + distance, tap enters capture flow |
 | 2026-06-11 | M4 | Done (Machine A): guided flow briefing → per-prompt camera steps (expo-camera) → local review with retakes → submit via shared `createSubmission` contract, then lands on submission history. Scope note: optional short-video capture deferred; contract already supports `kind: 'video'` |
 | 2026-06-11 | M5–M7 | Done (Machine B): submission history with status/feedback/retry entry, operator review queue (accept with reward presets, retry/reject with plain-language reasons + optional note), earnings screen (total, pending, reward history, payout-soon notice). All mock-backed with focus refresh. With M4's submit wiring on main, the full loop runs end to end |
-| 2026-06-11 | M8 | Capture-first pivot: core loop changed to "capture anything → submit → review → earn". Opportunities demoted to optional suggested tasks; AI auto-categorization (OpenAI vision) added in scope; two-machine split retired |
+| 2026-06-11 | P2 | Done: campaigns as shared contract (`Campaign`, `CampaignProgress` + API endpoints), active campaigns auto-derive into contributor opportunities (buyer concepts never leak), operator `/campaigns` screen with create form and fulfilment progress, auto-complete at target. Geography supported via optional campaign location; no self-serve buyer auth yet (operator-entered) |
+| 2026-06-11 | P1 | Done: Progress tab with streak (grace-day rule), levels (accepted-count thresholds), badge grid (earned + locked), time-boxed challenges with display-only bonuses (real bonuses land with P5), leaderboard vs seeded peers, and near-you/further/anywhere sections in the opportunity list. All game state derived from submission history — nothing extra to persist |
+| 2026-06-11 | M8 | Capture-first pivot: core loop changed to "capture anything → submit → review → earn". Opportunities demoted to optional suggested tasks; AI auto-categorization (OpenAI vision) shipped; two-machine split retired; live mock API no longer seeded with demo submissions (fixed false duplicate rejections) |
+| 2026-06-11 | M8b / P3 | Done: after submit, `features/data-package` reveals a buyer-ready package — animated "analyzing" reticle, robot-vision frames with detection boxes/labels, animated quality report, export manifest (media + frames + metadata/quality/labels JSON), and a gamified "training data generated" reward moment. Deterministic pure builder (`buildDataPackage`) with unit tests; new `package/[submissionId]` route; guided capture lands here; free capture aligned post-merge |

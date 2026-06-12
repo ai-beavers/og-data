@@ -30,8 +30,9 @@ export function CaptureScreen() {
   };
 
   const handleSubmit = async () => {
-    await flow.submit();
-    router.replace('/(tabs)/submissions');
+    const submission = await flow.submit();
+    // M8 — celebrate the submit by revealing the buyer-ready data package.
+    router.replace(`/package/${submission.id}`);
   };
 
   const phase: CapturePhase = flow.phase;

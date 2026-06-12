@@ -19,9 +19,9 @@ export function FreeCaptureScreen() {
   const [permission, requestPermission] = useCameraPermissions();
 
   const handleSubmit = async () => {
-    await flow.submit();
+    const submission = await flow.submit();
     flow.reset();
-    router.push('/(tabs)/submissions');
+    router.replace(`/package/${submission.id}`);
   };
 
   if (!permission) {

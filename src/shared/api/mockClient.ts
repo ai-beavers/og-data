@@ -1,7 +1,24 @@
+import {
+  campaignToOpportunity,
+  computeCampaignProgress,
+  isCampaignFulfilled,
+} from '@/features/campaigns/campaignLogic';
+import {
+  computeChallengeProgress,
+  computeContributorProgress,
+  isChallengeActive,
+} from '@/features/progression/progressionLogic';
 import type { ApiClient } from '@/shared/api/client';
 import type {
+  Campaign,
+  CampaignProgress,
+  Challenge,
+  ChallengeProgress,
+  ContributorProgress,
   EarningsSummary,
+  LeaderboardEntry,
   MoneyAmount,
+  NewCampaignInput,
   NewSubmissionInput,
   Opportunity,
   ReviewDecision,
@@ -17,28 +34,52 @@ function sumCents(amounts: MoneyAmount[]): MoneyAmount {
   };
 }
 
+/** Leaderboard peers before rank/current-user resolution. */
+type LeaderboardSeed = Omit<LeaderboardEntry, 'rank' | 'isCurrentUser'>;
+
+interface MockSeed {
+  opportunities?: Opportunity[];
+  submissions?: Submission[];
+  campaigns?: Campaign[];
+  challenges?: Challenge[];
+  leaderboard?: LeaderboardSeed[];
+}
+
 /**
- * In-memory ApiClient used by both workstreams during the MVP.
- * Seed it with fixtures (see src/testing/fixtures) so each machine can work
- * without waiting on the other.
+ * In-memory ApiClient used by both workstreams during the MVP and Post-MVP.
+ * Seed it with fixtures (see src/testing/fixtures) so each feature can work
+ * against realistic data. Game-layer and campaign reads are computed from
+ * submission history via the pure logic modules in features/.
  */
 export class MockApiClient implements ApiClient {
   private opportunities: Opportunity[];
   private submissions: Submission[];
+  private campaigns: Campaign[];
+  private challenges: Challenge[];
+  private leaderboardSeed: LeaderboardSeed[];
   private nextId = 1;
+  private nextCampaignId = 1;
 
-  constructor(seed?: { opportunities?: Opportunity[]; submissions?: Submission[] }) {
+  constructor(seed?: MockSeed) {
     this.opportunities = [...(seed?.opportunities ?? [])];
     this.submissions = [...(seed?.submissions ?? [])];
+    this.campaigns = [...(seed?.campaigns ?? [])];
+    this.challenges = [...(seed?.challenges ?? [])];
+    this.leaderboardSeed = [...(seed?.leaderboard ?? [])];
   }
 
   async listOpportunities(): Promise<Opportunity[]> {
-    // Location filtering is Machine A's M3 work; the mock returns everything.
-    return [...this.opportunities];
+    // Active campaigns surface as ordinary opportunities (P2); contributors
+    // never see the campaign behind them. Location sorting stays client-side.
+    const fromCampaigns = this.campaigns
+      .filter((c) => c.status === 'active')
+      .map(campaignToOpportunity);
+    return [...this.opportunities, ...fromCampaigns];
   }
 
   async getOpportunity(id: string): Promise<Opportunity | null> {
-    return this.opportunities.find((o) => o.id === id) ?? null;
+    const all = await this.listOpportunities();
+    return all.find((o) => o.id === id) ?? null;
   }
 
   async createSubmission(input: NewSubmissionInput): Promise<Submission> {
@@ -86,6 +127,7 @@ export class MockApiClient implements ApiClient {
           status: 'pending',
         };
         submission.rejectionReason = undefined;
+        this.completeFulfilledCampaigns();
         break;
       case 'needs_retry':
         submission.status = 'needs_retry';
@@ -102,5 +144,70 @@ export class MockApiClient implements ApiClient {
     }
     submission.reviewNote = decision.reviewNote;
     return submission;
+  }
+
+  // --- Post-MVP P1: game layer -------------------------------------------
+
+  async getContributorProgress(contributorId: string): Promise<ContributorProgress> {
+    return computeContributorProgress(contributorId, this.submissions, new Date());
+  }
+
+  async listChallenges(contributorId: string): Promise<ChallengeProgress[]> {
+    const own = this.submissions.filter((s) => s.contributorId === contributorId);
+    const now = new Date();
+    return this.challenges
+      .filter((c) => isChallengeActive(c, now))
+      .map((c) => computeChallengeProgress(c, own));
+  }
+
+  async getLeaderboard(contributorId: string): Promise<LeaderboardEntry[]> {
+    const acceptedCount = this.submissions.filter(
+      (s) => s.contributorId === contributorId && s.status === 'accepted',
+    ).length;
+    const merged: LeaderboardSeed[] = [
+      ...this.leaderboardSeed.filter((e) => e.contributorId !== contributorId),
+      { contributorId, displayName: 'You', acceptedCount },
+    ];
+    return merged
+      .sort((a, b) => b.acceptedCount - a.acceptedCount)
+      .map((entry, index) => ({
+        ...entry,
+        rank: index + 1,
+        isCurrentUser: entry.contributorId === contributorId,
+      }));
+  }
+
+  // --- Post-MVP P2: data request campaigns --------------------------------
+
+  async createCampaign(input: NewCampaignInput): Promise<Campaign> {
+    const campaign: Campaign = {
+      ...input,
+      id: `camp_new_${this.nextCampaignId++}`,
+      status: 'active',
+      createdAt: new Date().toISOString(),
+    };
+    this.campaigns.push(campaign);
+    return campaign;
+  }
+
+  async listCampaigns(): Promise<Campaign[]> {
+    return [...this.campaigns];
+  }
+
+  async getCampaignProgress(campaignId: string): Promise<CampaignProgress> {
+    const campaign = this.campaigns.find((c) => c.id === campaignId);
+    if (!campaign) {
+      throw new Error(`Campaign not found: ${campaignId}`);
+    }
+    return computeCampaignProgress(campaign, this.submissions);
+  }
+
+  /** Campaigns auto-complete once accepted submissions reach their target. */
+  private completeFulfilledCampaigns(): void {
+    for (const campaign of this.campaigns) {
+      if (campaign.status === 'active' && isCampaignFulfilled(campaign, this.submissions)) {
+        campaign.status = 'completed';
+      }
+    }
   }
 }
