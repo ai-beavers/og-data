@@ -1,0 +1,26 @@
+---
+description: Mobile performance, reliability, and quality principles
+globs: **/*.{ts,tsx,js,jsx,json}
+alwaysApply: false
+---
+
+# Performance And Quality
+
+- Optimize for perceived speed and confidence. Users should always know whether the app is ready, capturing, processing, uploading, pending, or failed.
+- Protect the main thread. Camera flows, previews, lists, maps, animations, and upload progress must remain responsive.
+- Treat media capture as a high-cost operation. Be careful with memory, storage, battery, network, and retry behavior.
+- Do not keep large images, videos, or derived assets in memory longer than needed.
+- Design uploads for real mobile networks: pause, resume, retry, deduplicate, and clearly recover from failure.
+- Prefer incremental progress and graceful degradation over blocking spinners.
+- Use production builds and real devices for meaningful performance checks.
+- Measure before optimizing. Fix the slow path that affects the contributor loop first.
+- Keep lists virtualized and screen rendering predictable when data grows.
+- Avoid unnecessary renders, deep prop chains, and broad global state updates.
+- Keep animations native-feeling, interruptible, and respectful of reduced-motion settings.
+- Avoid startup bloat. Initial load should not wait on non-critical data, analytics, or buyer/admin features.
+- Defer expensive work until it is needed, especially capture processing, map loading, and dataset metadata.
+- Cache only what improves the user experience or reliability. Do not cache sensitive data casually.
+- Make offline and poor-network states testable, not theoretical.
+- Keep error handling explicit and observable. Silent failure is unacceptable in capture, upload, reward, auth, and payout flows.
+- Add tests around domain state transitions, validation, permissions, retries, and reward-critical logic.
+- Use lints, type checks, and focused tests after substantive edits. Fix introduced issues before moving on.

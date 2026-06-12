@@ -1,0 +1,26 @@
+---
+description: Product vision and project structure guidance
+alwaysApply: true
+---
+
+# Product Vision And Structure
+
+- Build a React Native mobile app for distributed physical-world data collection.
+- The product must serve two audiences: everyday contributors capturing objects and data buyers needing useful physical-world datasets.
+- Contributor experience comes first: the capture loop must feel simple, rewarding, trustworthy, and lightweight enough for idle moments.
+- Data buyer needs matter, but should not leak complexity into the contributor UI.
+- Avoid premature decisions about final data format. Captures may remain raw media, annotated media, reconstructed assets, metadata-rich records, or another buyer-ready format.
+- Do not solution around speculative AI/3D pipelines unless the task explicitly asks for it or the PRD changes.
+- Keep product language concrete: capture, submit, review, earn, request, package.
+- Keep the core loop visible in all feature work: discover opportunity, capture well, submit, receive feedback, earn.
+
+## Project Structure
+
+- Prefer a clear feature-oriented structure over a layer-only structure.
+- Keep app entry, routing, and navigation thin. Product logic belongs in feature modules.
+- Organize contributor flows, buyer/admin flows, capture logic, rewards, review, and dataset packaging as distinct domains.
+- Shared UI primitives, design tokens, hooks, utilities, API clients, storage adapters, and types should live in predictable shared locations.
+- Platform-specific code should be isolated behind narrow interfaces or platform-specific files when behavior meaningfully differs by iOS and Android.
+- Keep native code rare and deliberate. React Native documentation currently recommends Expo for new production apps; prefer that path unless a clear native requirement justifies otherwise.
+- Do not let screens become orchestration dumping grounds. Extract state, domain logic, and reusable UI before a screen becomes hard to scan.
+- Treat tests, mocks, and fixtures as first-class project structure, not afterthoughts.

@@ -1,0 +1,26 @@
+---
+description: React Native architecture, state, data, and security principles
+globs: **/*.{ts,tsx,js,jsx,json}
+alwaysApply: false
+---
+
+# React Native Architecture And Security
+
+- Use TypeScript-first React Native patterns. Keep types close to the domain they describe.
+- Prefer explicit domain models for captures, opportunities, submissions, rewards, review states, campaigns, and datasets.
+- Model multi-step flows as clear state machines or equivalent explicit states. Avoid hidden boolean soup.
+- Keep side effects out of presentation components. Screens render state; feature logic coordinates capture, upload, validation, and rewards.
+- Separate local-only state, server state, persistent state, and derived UI state.
+- Validate data at trust boundaries: device inputs, API responses, persisted records, uploaded metadata, and buyer/admin-created campaigns.
+- Design for intermittent networks. Captures, uploads, retries, and reward states must remain understandable when connectivity changes.
+- Treat media, location, device metadata, and contributor identity as sensitive by default.
+- Request the minimum permissions needed, at the moment they are needed, with clear user-facing purpose.
+- Never collect background location, camera, microphone, contacts, or identifiers without an explicit product reason and user-visible control.
+- Avoid storing secrets in the app bundle or client-accessible config.
+- Keep authentication, session handling, and payout-related flows conservative and auditable.
+- Prevent duplicate, abusive, or obviously invalid submissions through product rules and server-side validation.
+- Keep data buyer access separated from contributor flows. Do not expose buyer-only data or review/admin controls in contributor surfaces.
+- Prefer platform-native controls and accessibility behavior where possible.
+- Isolate native modules and platform-specific behavior behind narrow adapters.
+- Add dependencies only when they solve a real product or platform problem. Prefer stable, well-maintained libraries with current documentation.
+- Before adopting or upgrading React Native, Expo, navigation, camera, maps, payments, storage, or analytics libraries, check Context7 and the package’s official release guidance.

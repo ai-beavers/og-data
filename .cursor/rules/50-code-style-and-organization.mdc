@@ -1,0 +1,27 @@
+---
+description: Code style and organization principles for React Native TypeScript
+globs: **/*.{ts,tsx,js,jsx}
+alwaysApply: false
+---
+
+# Code Style And Organization
+
+- Prefer TypeScript for app code. Avoid `any` unless the boundary is genuinely unknown and documented.
+- Keep modules small, named clearly, and organized around product meaning.
+- Prefer boring, readable code over clever code. A new engineer should understand the file quickly.
+- Keep component files focused on rendering and interaction. Move domain decisions, API work, persistence, and transformations elsewhere.
+- Use custom hooks for reusable stateful behavior, but do not hide business rules inside vague hooks.
+- Name things after user or domain concepts: capture, opportunity, submission, reward, review, campaign, dataset.
+- Avoid generic utility dumping grounds. Shared code must have a clear owner and reason to be shared.
+- Keep imports clean, stable, and top-level. Avoid circular dependencies.
+- Prefer composition over inheritance and configuration over branching when it reduces complexity.
+- Use discriminated unions or equivalent explicit types for states that can only be one thing at a time.
+- Handle impossible states deliberately. Do not let undefined, null, or partial data drive UI by accident.
+- Keep API, storage, permissions, camera, location, and payment concerns behind narrow interfaces.
+- Keep buyer/admin concerns separated from contributor-facing product code.
+- Do not introduce global state for local screen concerns.
+- Do not introduce local screen state for domain state that must survive navigation, reloads, or offline operation.
+- Keep constants, copy, design tokens, and domain configuration discoverable.
+- Comments must be JSDoc3-style for exported functions, public types, complex modules, and non-obvious behavior.
+- Tests should focus on product-critical behavior, not implementation trivia.
+- Refactor when a file, component, hook, or function becomes hard to name, scan, or test.

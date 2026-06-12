@@ -1,0 +1,27 @@
+---
+description: UI and UX principles for an Apple-quality React Native app
+globs: **/*.{ts,tsx,js,jsx,css,json}
+alwaysApply: false
+---
+
+# UI And UX: Apple-Quality Standard
+
+- Design as if Steve Jobs and Jony Ive must approve the result.
+- The app should feel native, calm, precise, and inevitable, not like a web app squeezed into a phone.
+- Prioritize clarity, deference, and depth: content and user intent lead; decoration stays quiet.
+- Every screen needs one obvious primary action. Remove competing calls to action unless the product truly needs them.
+- Make the capture loop feel effortless: discover, understand, capture, submit, feedback, earn.
+- Make complex data work feel simple to contributors. Never expose AI, robotics, 3D, or dataset complexity unless it helps the task.
+- Use restrained gamification. It should feel rewarding and playful, not cheap, noisy, manipulative, or casino-like.
+- Favor elegant motion that explains state changes. Avoid motion that delays users or exists only to impress.
+- Keep visual hierarchy ruthless: typography, spacing, color, contrast, and alignment should make the next step obvious.
+- Prefer native platform expectations for navigation, gestures, controls, safe areas, permission prompts, and accessibility behavior.
+- Design for one-handed use during short idle moments outdoors.
+- Assume glare, movement, interruptions, low battery, and spotty network during capture.
+- Error states must be humane and specific. Tell users what happened, what it means, and what they can do next.
+- Privacy and permission moments are part of the product experience. They must be honest, plain-language, and non-coercive.
+- Rewards must be transparent. Users should understand pending, accepted, rejected, and paid states without hunting.
+- Accessibility is not optional: support readable text, sufficient contrast, screen readers, touch targets, reduced motion, and dynamic type where possible.
+- Avoid visual novelty that conflicts with trust. This product handles location, camera, money, and buyer data; it must feel credible.
+- Empty states should teach the core loop without sounding corporate.
+- Do not add UI complexity to compensate for unclear product thinking. Clarify the product before adding screens.

@@ -1,0 +1,20 @@
+---
+description: Global operating principles for this project
+alwaysApply: true
+---
+
+# Global Operating Principles
+
+- Treat `README_PRD.md` or `README_PRD.txt` as the product source of truth. Check it before product, architecture, UI, or scope decisions, and keep progress aligned there when work changes the product direction.
+- Investigate requests thoroughly before acting. Use available tools: semantic search, exact search, file reads, lints, tests, terminal evidence, and relevant MCP tools.
+- Use Context7 MCP for current documentation before recommending or changing framework, library, SDK, API, CLI, or version-specific behavior. Do not rely on model memory for “latest” facts.
+- Prefer simple, elegant solutions. Every abstraction must earn its place by reducing real complexity.
+- If important files or context appear missing, search for them first. If they cannot be found, ask the user before continuing.
+- Code files created or materially changed in this project should stay under 500 LOC. Split, refactor, or extract modules before crossing that limit.
+- Write concise, efficient code. Comment code intentionally and consistently, but never add noise.
+- Comments must use clear, concise language; explain why or how, not the obvious what.
+- Prefer single-line comments for brief intent and JSDoc3-style comments for functions, classes, modules, public types, and non-obvious behavior.
+- Never erase old comments if they are still useful and accurate.
+- Keep imports at the top of files. Avoid inline imports unless a documented circular dependency makes them unavoidable.
+- Use exhaustive switch handling for TypeScript unions and enums with a `never` check in the default case.
+- If a user pivot, new feature, or direction change makes these rules stale, inform the user that the rules need changing and update them as part of the work.
