@@ -82,6 +82,15 @@ Goal: a contributor can onboard, find a nearby task, capture it with guidance, s
 - [x] Earnings screen: accumulated total, per-submission rewards, pending rewards
 - [x] Payout status display (actual payout rails are Post-MVP)
 
+### M8 — Hackathon Demo Wow Layer
+
+Goal: make the demo feel like a normal contributor just created useful physical-world training data, not merely uploaded media.
+
+- [ ] Show a short capture turning into a buyer-ready data package: original media, extracted key frames, capture prompt, context metadata, and quality report
+- [ ] Add a "robot vision" style preview with animated frame analysis, labels/overlays, and coverage/quality signals
+- [ ] Keep the downstream format honest: the demo can preview a structured data package, but does not claim production-grade 3D reconstruction unless explicitly built
+- [ ] Make the contributor side feel gamified and rewarding with progress states, satisfying transitions, score/reward feedback, and a clear "training data generated" moment
+
 ---
 
 ## Parallel Workstream Split (two machines)
@@ -131,6 +140,7 @@ Goal: deepen contributor retention, open the buyer side, and turn accepted data 
 - [ ] Organize accepted submissions into buyer-ready datasets
 - [ ] Preserve captured media plus context needed to evaluate, filter, and use the data
 - [ ] Support flexible output formats per buyer agreement (format intentionally not prescribed)
+- [ ] Explore buyer package formats starting with raw media + metadata + key frames + quality signals before committing to heavier outputs like reconstructed assets or 3D models
 
 ### P4 — Scaled Review & Trust
 
@@ -159,3 +169,4 @@ Add brief dated entries when a deliverable changes status or scope.
 | 2026-06-11 | M3 | Done (Machine A): location-sorted opportunity list (expo-location, graceful fallback when denied), cards show task + reward range + distance, tap enters capture flow |
 | 2026-06-11 | M4 | Done (Machine A): guided flow briefing → per-prompt camera steps (expo-camera) → local review with retakes → submit via shared `createSubmission` contract, then lands on submission history. Scope note: optional short-video capture deferred; contract already supports `kind: 'video'` |
 | 2026-06-11 | M5–M7 | Done (Machine B): submission history with status/feedback/retry entry, operator review queue (accept with reward presets, retry/reject with plain-language reasons + optional note), earnings screen (total, pending, reward history, payout-soon notice). All mock-backed with focus refresh. With M4's submit wiring on main, the full loop runs end to end |
+| 2026-06-11 | M8 / P3 | Added hackathon wow-layer scope: buyer-ready data package preview, robot-vision analysis animation, gamified contributor feedback, and a clear note that final downstream format remains flexible |
