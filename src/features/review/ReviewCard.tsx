@@ -50,7 +50,8 @@ export function ReviewCard({ submission, opportunity, onDecide }: ReviewCardProp
   const [reason, setReason] = useState<RejectionReason | null>(null);
   const [note, setNote] = useState('');
 
-  const title = opportunity?.title ?? submission.category.replaceAll('_', ' ');
+  const title =
+    submission.aiLabel ?? opportunity?.title ?? submission.category.replaceAll('_', ' ');
   const reviewNote = note.trim() === '' ? undefined : note.trim();
 
   function selectMode(next: DecisionMode) {

@@ -36,7 +36,11 @@ export function SubmissionsScreen() {
         renderItem={({ item }) => (
           <SubmissionCard
             submission={item}
-            title={titles[item.opportunityId] ?? item.category.replaceAll('_', ' ')}
+            title={
+              item.aiLabel ??
+              (item.opportunityId ? titles[item.opportunityId] : undefined) ??
+              item.category.replaceAll('_', ' ')
+            }
           />
         )}
         ListEmptyComponent={
@@ -44,7 +48,7 @@ export function SubmissionsScreen() {
             <View style={styles.empty}>
               <AppText variant="heading">Nothing here yet</AppText>
               <AppText variant="body" muted style={styles.emptyBody}>
-                Capture a nearby opportunity and your submissions will show up here with
+                Capture anything around you and your submissions will show up here with
                 their review status.
               </AppText>
             </View>

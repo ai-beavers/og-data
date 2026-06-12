@@ -54,7 +54,9 @@ export function ReviewQueueScreen() {
         renderItem={({ item }) => (
           <ReviewCard
             submission={item}
-            opportunity={opportunities[item.opportunityId] ?? null}
+            opportunity={
+              item.opportunityId ? (opportunities[item.opportunityId] ?? null) : null
+            }
             onDecide={(decision) => decide(item.id, decision)}
           />
         )}

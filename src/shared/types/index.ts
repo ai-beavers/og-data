@@ -58,19 +58,25 @@ export interface CapturedMedia {
 
 /** What the capture flow hands to the API when the contributor submits (M5). */
 export interface NewSubmissionInput {
-  opportunityId: string;
+  /** Absent for free captures (M8); present when fulfilling a suggested task. */
+  opportunityId?: string;
   contributorId: string;
   media: CapturedMedia[];
   category: string;
+  /** AI-identified subject of a free capture, e.g. "red fire hydrant" (M8). */
+  aiLabel?: string;
   location?: GeoPoint;
 }
 
 export interface Submission {
   id: string;
-  opportunityId: string;
+  /** Absent for free captures (M8); present when fulfilling a suggested task. */
+  opportunityId?: string;
   contributorId: string;
   media: CapturedMedia[];
   category: string;
+  /** AI-identified subject of a free capture, e.g. "red fire hydrant" (M8). */
+  aiLabel?: string;
   location?: GeoPoint;
   submittedAt: string; // ISO 8601
   status: SubmissionStatus;

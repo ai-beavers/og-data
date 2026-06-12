@@ -65,7 +65,11 @@ export function SubmissionCard({ submission, title }: SubmissionCardProps) {
       {submission.status === 'needs_retry' ? (
         <AppButton
           label="Retry capture"
-          onPress={() => router.push(`/capture/${submission.opportunityId}`)}
+          onPress={() =>
+            submission.opportunityId
+              ? router.push(`/capture/${submission.opportunityId}`)
+              : router.push('/(tabs)')
+          }
         />
       ) : null}
     </Card>
