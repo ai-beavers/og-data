@@ -40,11 +40,11 @@ Goal: a contributor can onboard, find a nearby task, capture it with guidance, s
 
 ### M1 — App Foundation
 
-- [ ] Expo React Native scaffold with feature-oriented project structure
-- [ ] Navigation shell (thin routing; product logic in feature modules)
-- [ ] Shared design tokens, UI primitives, and base theme
-- [ ] API client, storage adapters, and shared types in predictable locations
-- [ ] Test/mocks/fixtures structure set up as first-class
+- [x] Expo React Native scaffold with feature-oriented project structure
+- [x] Navigation shell (thin routing; product logic in feature modules)
+- [x] Shared design tokens, UI primitives, and base theme
+- [x] API client, storage adapters, and shared types in predictable locations
+- [x] Test/mocks/fixtures structure set up as first-class
 
 ### M2 — Contributor Onboarding
 
@@ -81,6 +81,31 @@ Goal: a contributor can onboard, find a nearby task, capture it with guidance, s
 - [ ] Reward assigned per accepted submission (can vary by complexity, demand, quality)
 - [ ] Earnings screen: accumulated total, per-submission rewards, pending rewards
 - [ ] Payout status display (actual payout rails are Post-MVP)
+
+---
+
+## Parallel Workstream Split (two machines)
+
+The MVP is split along the **submit boundary**: Machine A owns everything before a submission exists; Machine B owns everything after. The shared contract between them is the submission payload and its states.
+
+### Phase 0 — Machine A only (blocking, keep it short)
+
+M1 in full, pushed to main before parallel work starts. Most important output: **shared contracts** in `shared/` — types for `Opportunity`, `Submission`, `SubmissionStatus` (`pending_review | accepted | needs_retry | rejected`), `Reward`, and the mock API client surface. Once committed, these are frozen except via coordinated changes.
+
+### Phase 1 — Parallel
+
+| | Machine A — Capture side | Machine B — Post-submit side |
+| --- | --- | --- |
+| Deliverables | M2 Onboarding, M3 Opportunities, M4 Guided Capture | M5 Submission, M6 Review & Feedback, M7 Rewards |
+| Owns | `features/onboarding`, `features/opportunities`, `features/capture` | `features/submissions`, `features/review`, `features/rewards` |
+| Works against | Seeded opportunity fixtures | Fixture submissions (never waits on Machine A) |
+
+### Rules of engagement
+
+- Neither machine edits the other's feature folders.
+- Changes to `shared/` types or the API contract are small, separate commits, coordinated before merging.
+- Rebase on main at least daily.
+- Done when the full loop works end to end: capture → submit → review → feedback → reward.
 
 ---
 
@@ -128,3 +153,5 @@ Add brief dated entries when a deliverable changes status or scope.
 | Date | Deliverable | Change |
 | --- | --- | --- |
 | 2026-06-11 | — | PRD restructured into staged deliverables with MVP / Post-MVP split |
+| 2026-06-11 | — | Added two-machine parallel workstream split (capture side vs post-submit side) |
+| 2026-06-11 | M1 | Phase 0 complete: Expo SDK 56 scaffold, feature structure, shared contracts (types + mock API + storage), design tokens/UI primitives, nav shell with placeholder routes, jest-expo with contract tests. Parallel work unblocked |
