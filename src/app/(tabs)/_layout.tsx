@@ -12,7 +12,8 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: colors.textSecondary,
       }}
     >
-      <Tabs.Screen name="index" options={{ title: 'Opportunities' }} />
+      <Tabs.Screen name="index" options={{ title: 'Capture' }} />
+      <Tabs.Screen name="tasks" options={{ title: 'Tasks' }} />
       <Tabs.Screen name="submissions" options={{ title: 'Submissions' }} />
       <Tabs.Screen name="earnings" options={{ title: 'Earnings' }} />
     </Tabs>

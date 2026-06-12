@@ -6,16 +6,29 @@ import { AppText, colors, radius, spacing } from '@/shared/ui';
 
 interface CameraStepProps {
   prompt: string;
-  stepNumber: number;
-  totalSteps: number;
-  onCaptured: (uri: string) => void;
+  /** Guided flow only — when both are set the "Shot x of y" counter shows. */
+  stepNumber?: number;
+  totalSteps?: number;
+  /** Free capture: shots taken so far, shown next to the done action. */
+  shotCount?: number;
+  onCaptured: (uri: string, base64?: string) => void;
+  /** Free capture: finish shooting and move to review. */
+  onDone?: () => void;
 }
 
 /**
- * One guided shot: live camera preview with the current prompt overlaid,
- * written for non-technical contributors.
+ * One camera shot with the current guidance overlaid, written for
+ * non-technical contributors. Used by both the guided flow (M4, one step per
+ * prompt) and free capture (M8, shoot as many angles as you like).
  */
-export function CameraStep({ prompt, stepNumber, totalSteps, onCaptured }: CameraStepProps) {
+export function CameraStep({
+  prompt,
+  stepNumber,
+  totalSteps,
+  shotCount,
+  onCaptured,
+  onDone,
+}: CameraStepProps) {
   const cameraRef = useRef<CameraView>(null);
   const [ready, setReady] = useState(false);
   const [taking, setTaking] = useState(false);
@@ -24,14 +37,19 @@ export function CameraStep({ prompt, stepNumber, totalSteps, onCaptured }: Camer
     if (!ready || taking) return;
     setTaking(true);
     try {
-      const picture = await cameraRef.current?.takePictureAsync({ quality: 0.8 });
+      const picture = await cameraRef.current?.takePictureAsync({
+        quality: 0.8,
+        base64: true,
+      });
       if (picture) {
-        onCaptured(picture.uri);
+        onCaptured(picture.uri, picture.base64 ?? undefined);
       }
     } finally {
       setTaking(false);
     }
   };
+
+  const showDone = onDone !== undefined && (shotCount ?? 0) > 0;
 
   return (
     <View style={styles.container}>
@@ -42,9 +60,11 @@ export function CameraStep({ prompt, stepNumber, totalSteps, onCaptured }: Camer
         onCameraReady={() => setReady(true)}
       />
       <View style={styles.promptOverlay}>
-        <AppText variant="caption" style={styles.stepLabel}>
-          Shot {stepNumber} of {totalSteps}
-        </AppText>
+        {stepNumber !== undefined && totalSteps !== undefined ? (
+          <AppText variant="caption" style={styles.stepLabel}>
+            Shot {stepNumber} of {totalSteps}
+          </AppText>
+        ) : null}
         <AppText variant="heading">{prompt}</AppText>
       </View>
       <View style={styles.controls}>
@@ -59,6 +79,18 @@ export function CameraStep({ prompt, stepNumber, totalSteps, onCaptured }: Camer
             !ready && styles.shutterDisabled,
           ]}
         />
+        {showDone ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Finish capturing"
+            onPress={onDone}
+            style={({ pressed }) => [styles.doneButton, pressed && styles.donePressed]}
+          >
+            <AppText variant="caption" style={styles.doneLabel}>
+              Done ({shotCount})
+            </AppText>
+          </Pressable>
+        ) : null}
       </View>
     </View>
   );
@@ -84,6 +116,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   shutter: {
     width: 72,
@@ -95,4 +128,16 @@ const styles = StyleSheet.create({
   },
   shutterPressed: { backgroundColor: colors.textSecondary },
   shutterDisabled: { opacity: 0.4 },
+  doneButton: {
+    position: 'absolute',
+    right: spacing.lg,
+    backgroundColor: `${colors.background}E6`,
+    borderRadius: radius.pill,
+    borderWidth: 1,
+    borderColor: colors.accent,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+  },
+  donePressed: { opacity: 0.7 },
+  doneLabel: { color: colors.accent, fontWeight: '600' },
 });

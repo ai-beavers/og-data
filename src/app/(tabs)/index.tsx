@@ -1,3 +1,3 @@
-import { OpportunitiesScreen } from '@/features/opportunities/OpportunitiesScreen';
+import { FreeCaptureScreen } from '@/features/capture/FreeCaptureScreen';
 
-export default OpportunitiesScreen;
+export default FreeCaptureScreen;

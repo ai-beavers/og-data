@@ -7,9 +7,17 @@ interface AppButtonProps {
   label: string;
   onPress: () => void;
   disabled?: boolean;
+  /** "primary" is the filled accent button; "secondary" is an outline. */
+  variant?: 'primary' | 'secondary';
 }
 
-export function AppButton({ label, onPress, disabled = false }: AppButtonProps) {
+export function AppButton({
+  label,
+  onPress,
+  disabled = false,
+  variant = 'primary',
+}: AppButtonProps) {
+  const secondary = variant === 'secondary';
   return (
     <Pressable
       accessibilityRole="button"
@@ -17,11 +25,12 @@ export function AppButton({ label, onPress, disabled = false }: AppButtonProps) 
       disabled={disabled}
       style={({ pressed }) => [
         styles.button,
-        pressed && styles.pressed,
+        secondary && styles.secondary,
+        pressed && (secondary ? styles.secondaryPressed : styles.pressed),
         disabled && styles.disabled,
       ]}
     >
-      <AppText variant="heading" style={styles.label}>
+      <AppText variant="heading" style={secondary ? styles.secondaryLabel : styles.label}>
         {label}
       </AppText>
     </Pressable>
@@ -36,7 +45,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     alignItems: 'center',
   },
+  secondary: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.accent,
+  },
   pressed: { backgroundColor: colors.accentPressed },
+  secondaryPressed: { backgroundColor: colors.surfaceRaised },
   disabled: { opacity: 0.5 },
   label: { color: colors.background },
+  secondaryLabel: { color: colors.accent },
 });

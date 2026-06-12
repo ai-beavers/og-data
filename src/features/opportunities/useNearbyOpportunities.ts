@@ -18,6 +18,9 @@ interface NearbyOpportunitiesState {
   locationAvailable: boolean;
 }
 
+/** Geolocation may never settle (e.g. a dismissed browser prompt) — cap the wait. */
+const LOCATION_TIMEOUT_MS = 5000;
+
 /** Place-bound opportunities sorted nearest-first; "anywhere" tasks follow. */
 export function sortByDistance(
   opportunities: Opportunity[],
@@ -38,6 +41,14 @@ export function sortByDistance(
   });
 }
 
+/** Resolves null instead of hanging when `promise` outlives the timeout. */
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T | null> {
+  return Promise.race([
+    promise,
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), ms)),
+  ]);
+}
+
 async function getPosition(): Promise<GeoPoint | null> {
   const lastKnown = await Location.getLastKnownPositionAsync();
   const location =
@@ -49,8 +60,22 @@ async function getPosition(): Promise<GeoPoint | null> {
 }
 
 /**
+ * Best-effort position: permission prompt and fix are both capped so a hung
+ * browser prompt or missing GPS can never block the caller.
+ */
+async function getPositionSafe(): Promise<GeoPoint | null> {
+  const permission = await withTimeout(
+    Location.requestForegroundPermissionsAsync(),
+    LOCATION_TIMEOUT_MS,
+  ).catch(() => null);
+  if (permission?.status !== Location.PermissionStatus.GRANTED) return null;
+  return withTimeout(getPosition(), LOCATION_TIMEOUT_MS).catch(() => null);
+}
+
+/**
  * M3 — loads opportunities and orders them by distance when the contributor
- * grants location. Denied permission degrades gracefully to the plain list.
+ * grants location. The plain list renders immediately; distance sorting is a
+ * progressive enhancement applied once (and if) geolocation resolves.
  */
 export function useNearbyOpportunities(): NearbyOpportunitiesState {
   const [state, setState] = useState<NearbyOpportunitiesState>({
@@ -64,20 +89,23 @@ export function useNearbyOpportunities(): NearbyOpportunitiesState {
 
     async function load() {
       const opportunities = await api.listOpportunities();
+      if (cancelled) return;
 
-      let position: GeoPoint | null = null;
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status === Location.PermissionStatus.GRANTED) {
-        position = await getPosition().catch(() => null);
-      }
+      // Show the unsorted list right away — never wait on geolocation.
+      setState({
+        items: sortByDistance(opportunities, null),
+        loading: false,
+        locationAvailable: true,
+      });
 
-      if (!cancelled) {
-        setState({
-          items: sortByDistance(opportunities, position),
-          loading: false,
-          locationAvailable: position !== null,
-        });
-      }
+      const position = await getPositionSafe();
+      if (cancelled) return;
+
+      setState({
+        items: sortByDistance(opportunities, position),
+        loading: false,
+        locationAvailable: position !== null,
+      });
     }
 
     load();
