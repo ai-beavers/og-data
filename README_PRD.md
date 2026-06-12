@@ -124,16 +124,16 @@ Goal: deepen contributor retention, open the buyer side, and turn accepted data 
 
 ### P1 — Game-Like Motivation
 
-- [ ] Progress, streaks, and challenges
-- [ ] Collection goals, levels, and badges
-- [ ] Leaderboards and location-based discovery
-- [ ] Keep the game layer motivating without making capture feel like technical work
+- [x] Progress, streaks, and challenges
+- [x] Collection goals, levels, and badges
+- [x] Leaderboards and location-based discovery
+- [x] Keep the game layer motivating without making capture feel like technical work
 
 ### P2 — Data Request Campaigns
 
-- [ ] Buyers/operators define needed data: categories, environments, geographies, capture depth, quality expectations, reward ranges
-- [ ] Campaigns automatically become contributor-facing opportunities
-- [ ] Campaign progress visibility for the requester
+- [x] Buyers/operators define needed data: categories, environments, geographies, capture depth, quality expectations, reward ranges
+- [x] Campaigns automatically become contributor-facing opportunities
+- [x] Campaign progress visibility for the requester
 
 ### P3 — Dataset Packaging
 
@@ -169,4 +169,6 @@ Add brief dated entries when a deliverable changes status or scope.
 | 2026-06-11 | M3 | Done (Machine A): location-sorted opportunity list (expo-location, graceful fallback when denied), cards show task + reward range + distance, tap enters capture flow |
 | 2026-06-11 | M4 | Done (Machine A): guided flow briefing → per-prompt camera steps (expo-camera) → local review with retakes → submit via shared `createSubmission` contract, then lands on submission history. Scope note: optional short-video capture deferred; contract already supports `kind: 'video'` |
 | 2026-06-11 | M5–M7 | Done (Machine B): submission history with status/feedback/retry entry, operator review queue (accept with reward presets, retry/reject with plain-language reasons + optional note), earnings screen (total, pending, reward history, payout-soon notice). All mock-backed with focus refresh. With M4's submit wiring on main, the full loop runs end to end |
+| 2026-06-11 | P2 | Done: campaigns as shared contract (`Campaign`, `CampaignProgress` + API endpoints), active campaigns auto-derive into contributor opportunities (buyer concepts never leak), operator `/campaigns` screen with create form and fulfilment progress, auto-complete at target. Geography supported via optional campaign location; no self-serve buyer auth yet (operator-entered) |
+| 2026-06-11 | P1 | Done: Progress tab with streak (grace-day rule), levels (accepted-count thresholds), badge grid (earned + locked), time-boxed challenges with display-only bonuses (real bonuses land with P5), leaderboard vs seeded peers, and near-you/further/anywhere sections in the opportunity list. All game state derived from submission history — nothing extra to persist |
 | 2026-06-11 | M8 / P3 | Added hackathon wow-layer scope: buyer-ready data package preview, robot-vision analysis animation, gamified contributor feedback, and a clear note that final downstream format remains flexible |
