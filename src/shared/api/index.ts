@@ -1,4 +1,7 @@
 import { MockApiClient } from '@/shared/api/mockClient';
+import { campaignFixtures } from '@/testing/fixtures/campaigns';
+import { challengeFixtures } from '@/testing/fixtures/challenges';
+import { leaderboardFixtures } from '@/testing/fixtures/leaderboard';
 import { opportunityFixtures } from '@/testing/fixtures/opportunities';
 import { submissionFixtures } from '@/testing/fixtures/submissions';
 
@@ -12,4 +15,7 @@ export { MockApiClient } from '@/shared/api/mockClient';
 export const api = new MockApiClient({
   opportunities: opportunityFixtures,
   submissions: submissionFixtures,
+  campaigns: campaignFixtures,
+  challenges: challengeFixtures,
+  leaderboard: leaderboardFixtures,
 });
