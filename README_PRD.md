@@ -48,21 +48,21 @@ Goal: a contributor can onboard, find a nearby task, capture it with guidance, s
 
 ### M2 — Contributor Onboarding
 
-- [ ] Explain what the app does, what can be captured, and how rewards work
-- [ ] Capture-behavior guidelines (what's allowed, what's not)
-- [ ] Frame the task simply: find something nearby, capture it well, submit, earn
+- [x] Explain what the app does, what can be captured, and how rewards work
+- [x] Capture-behavior guidelines (what's allowed, what's not)
+- [x] Frame the task simply: find something nearby, capture it well, submit, earn
 
 ### M3 — Nearby Capture Opportunities
 
-- [ ] Opportunity list driven by location and/or general collection goals
-- [ ] Each opportunity states clearly what to capture and the expected reward range
-- [ ] Seeded/operator-defined opportunities (no buyer self-serve yet)
+- [x] Opportunity list driven by location and/or general collection goals
+- [x] Each opportunity states clearly what to capture and the expected reward range
+- [x] Seeded/operator-defined opportunities (no buyer self-serve yet)
 
 ### M4 — Guided Capture Flow
 
-- [ ] Camera capture with step-by-step instructions (move around object, multiple angles, close-ups, optional short video)
-- [ ] Guidance written for non-technical contributors; no exposure of downstream format
-- [ ] Local capture review before submission
+- [x] Camera capture with step-by-step instructions (move around object, multiple angles, close-ups; optional short video deferred — see log)
+- [x] Guidance written for non-technical contributors; no exposure of downstream format
+- [x] Local capture review before submission
 
 ### M5 — Submission
 
@@ -155,3 +155,6 @@ Add brief dated entries when a deliverable changes status or scope.
 | 2026-06-11 | — | PRD restructured into staged deliverables with MVP / Post-MVP split |
 | 2026-06-11 | — | Added two-machine parallel workstream split (capture side vs post-submit side) |
 | 2026-06-11 | M1 | Phase 0 complete: Expo SDK 56 scaffold, feature structure, shared contracts (types + mock API + storage), design tokens/UI primitives, nav shell with placeholder routes, jest-expo with contract tests. Parallel work unblocked |
+| 2026-06-11 | M2 | Done (Machine A): 3-step onboarding (what/rules/loop), persisted seen-flag via shared storage, entry redirect skips onboarding on revisit |
+| 2026-06-11 | M3 | Done (Machine A): location-sorted opportunity list (expo-location, graceful fallback when denied), cards show task + reward range + distance, tap enters capture flow |
+| 2026-06-11 | M4 | Done (Machine A): guided flow briefing → per-prompt camera steps (expo-camera) → local review with retakes → submit via shared `createSubmission` contract, then lands on submission history. Scope note: optional short-video capture deferred; contract already supports `kind: 'video'` |

@@ -1,43 +1,49 @@
-import { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { router } from 'expo-router';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 
-import { api } from '@/shared/api';
-import type { Opportunity } from '@/shared/types';
-import { AppText, Card, Screen } from '@/shared/ui';
-
-function formatRange(opportunity: Opportunity): string {
-  const { min, max } = opportunity.rewardRange;
-  return `$${(min.cents / 100).toFixed(2)} – $${(max.cents / 100).toFixed(2)}`;
-}
+import { OpportunityCard } from '@/features/opportunities/OpportunityCard';
+import { useNearbyOpportunities } from '@/features/opportunities/useNearbyOpportunities';
+import { AppText, Screen, colors, spacing } from '@/shared/ui';
 
 /**
  * M3 — Nearby Capture Opportunities (Machine A).
- * Minimal working list over the seeded mock API. Serves as the reference
- * pattern for consuming `api` from feature screens; Machine A extends this
- * with location-driven ordering and the capture entry point.
+ * Location-sorted list of seeded tasks; tapping one enters the guided
+ * capture flow (M4).
  */
 export function OpportunitiesScreen() {
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
-
-  useEffect(() => {
-    api.listOpportunities().then(setOpportunities);
-  }, []);
+  const { items, loading, locationAvailable } = useNearbyOpportunities();
 
   return (
     <Screen>
       <AppText variant="title">Nearby opportunities</AppText>
-      <FlatList
-        data={opportunities}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ gap: 12 }}
-        renderItem={({ item }) => (
-          <Card>
-            <AppText variant="heading">{item.title}</AppText>
-            <AppText muted>{item.description}</AppText>
-            <AppText variant="caption">Reward: {formatRange(item)}</AppText>
-          </Card>
-        )}
-      />
+      {!loading && !locationAvailable ? (
+        <AppText variant="caption" muted>
+          {'Location is off — showing all tasks. Enable location to see what\u2019s closest.'}
+        </AppText>
+      ) : null}
+      {loading ? (
+        <ActivityIndicator color={colors.accent} style={styles.loader} />
+      ) : (
+        <FlatList
+          data={items}
+          keyExtractor={({ opportunity }) => opportunity.id}
+          contentContainerStyle={styles.list}
+          ListEmptyComponent={
+            <AppText muted>No capture tasks right now — check back soon.</AppText>
+          }
+          renderItem={({ item }) => (
+            <OpportunityCard
+              item={item}
+              onPress={() => router.push(`/capture/${item.opportunity.id}`)}
+            />
+          )}
+        />
+      )}
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  loader: { marginTop: spacing.xl },
+  list: { gap: spacing.md, paddingBottom: spacing.lg },
+});
