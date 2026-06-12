@@ -2,9 +2,9 @@
 
 Turn idle moments into useful physical-world training data. Contributors capture everyday objects and environments with their phone; the app labels what they shot, packages it for buyers, and pays them when it passes review.
 
-| Capture | Review | Data package | Earnings |
+| Capture | Review | Data package | You earned |
 | :---: | :---: | :---: | :---: |
-| ![Capture screen](./docs/screenshots/capture.jpg) | ![Review before submit](./docs/screenshots/review.jpg) | ![Buyer-ready package preview](./docs/screenshots/data-package.jpg) | ![Earnings tab](./docs/screenshots/earnings.jpg) |
+| ![Capture screen](./docs/screenshots/capture.jpg) | ![Review before submit](./docs/screenshots/review.jpg) | ![Buyer-ready package preview](./docs/screenshots/data-package.jpg) | ![$1.00 earned for this chair capture](./docs/screenshots/earnings.jpg) |
 
 ## How it works
 
