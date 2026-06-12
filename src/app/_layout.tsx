@@ -19,6 +19,10 @@ export default function RootLayout() {
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="capture/[opportunityId]" options={{ title: 'Capture' }} />
+        <Stack.Screen
+          name="package/[submissionId]"
+          options={{ title: 'Your data package', headerBackVisible: false }}
+        />
         <Stack.Screen name="review" options={{ title: 'Review (operator)' }} />
         <Stack.Screen name="campaigns" options={{ title: 'Campaigns (operator)' }} />
       </Stack>

@@ -86,10 +86,10 @@ Goal: a contributor can onboard, find a nearby task, capture it with guidance, s
 
 Goal: make the demo feel like a normal contributor just created useful physical-world training data, not merely uploaded media.
 
-- [ ] Show a short capture turning into a buyer-ready data package: original media, extracted key frames, capture prompt, context metadata, and quality report
-- [ ] Add a "robot vision" style preview with animated frame analysis, labels/overlays, and coverage/quality signals
-- [ ] Keep the downstream format honest: the demo can preview a structured data package, but does not claim production-grade 3D reconstruction unless explicitly built
-- [ ] Make the contributor side feel gamified and rewarding with progress states, satisfying transitions, score/reward feedback, and a clear "training data generated" moment
+- [x] Show a short capture turning into a buyer-ready data package: original media, extracted key frames, capture prompt, context metadata, and quality report
+- [x] Add a "robot vision" style preview with animated frame analysis, labels/overlays, and coverage/quality signals
+- [x] Keep the downstream format honest: the demo can preview a structured data package, but does not claim production-grade 3D reconstruction unless explicitly built
+- [x] Make the contributor side feel gamified and rewarding with progress states, satisfying transitions, score/reward feedback, and a clear "training data generated" moment
 
 ---
 
@@ -172,3 +172,4 @@ Add brief dated entries when a deliverable changes status or scope.
 | 2026-06-11 | P2 | Done: campaigns as shared contract (`Campaign`, `CampaignProgress` + API endpoints), active campaigns auto-derive into contributor opportunities (buyer concepts never leak), operator `/campaigns` screen with create form and fulfilment progress, auto-complete at target. Geography supported via optional campaign location; no self-serve buyer auth yet (operator-entered) |
 | 2026-06-11 | P1 | Done: Progress tab with streak (grace-day rule), levels (accepted-count thresholds), badge grid (earned + locked), time-boxed challenges with display-only bonuses (real bonuses land with P5), leaderboard vs seeded peers, and near-you/further/anywhere sections in the opportunity list. All game state derived from submission history — nothing extra to persist |
 | 2026-06-11 | M8 / P3 | Added hackathon wow-layer scope: buyer-ready data package preview, robot-vision analysis animation, gamified contributor feedback, and a clear note that final downstream format remains flexible |
+| 2026-06-11 | M8 | Done: after submit, `features/data-package` reveals a buyer-ready package — animated "analyzing" reticle, robot-vision frames with detection boxes/labels, animated quality report, export manifest (media + frames + metadata/quality/labels JSON), and a gamified "training data generated" reward moment. Deterministic pure builder (`buildDataPackage`) with unit tests; new `package/[submissionId]` route; capture flow now lands here. RN Animated only (no new deps); typecheck/lint/56 tests green |
